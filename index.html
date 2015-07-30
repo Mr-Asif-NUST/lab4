@@ -1,0 +1,129 @@
+
+<!-- I, Asif Javed admit, that I have taken the help from http://www.a2zwebhelp.com // to solve the lab task but I make sure that I have completely understood how the code is working -->
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<style>
+	body{
+		background:blue;
+	}
+	
+	#graph-wrapper{
+		width:900px;
+		margin:5 auto;
+		padding-top:50px
+	}
+</style>
+
+<title>Interactive  Graph</title>
+<link rel="stylesheet" href="css/graph.css">
+<meta name="robots" content="noindex,follow" />
+
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery.flot.min.js"></script>
+
+<script>
+$(document).ready(function () {
+
+
+
+var graphData = [{
+			// NUST Year 2014
+			data: [ [01, 1200], [02, 500], [03, 700], [04, 1400], [05, 2300], [06, 1300], [07, 2200], [08, 830], [09, 1430], [10, 360], [11, 560], [12, 2330] ],
+			color: '#0291e3'
+		},
+		{
+			// Year 2015
+			data: [ [01, 900], [02, 300], [03, 740], [04, 1500], [05, 1400], [06, 1300], [07, 830], [08, 1950], [09, 2330], [10, 830], [11, 1230], [12, 1450] ],
+			color: '#ef4a01'
+		}
+
+
+	];
+
+
+<!--Line Graph-->
+	$.plot($('#graph-lines'), graphData, {
+		series: {
+			points: {
+				show: true,
+				radius: 7
+			},
+			lines: {
+				show: true
+			},
+			shadowSize: 3
+		},
+		grid: {
+			color: '#646464',
+			borderColor: 'yellow',
+			borderWidth: 30,
+			hoverable: true
+		},
+		xaxis: {
+			tickColor: 'red'
+		},
+		yaxis: {
+			tickSize: 200
+		}
+	});
+
+
+	
+<!--ToolTip-->
+
+function showTooltip(x, y, contents) {
+		$('<div id="tooltip">' + contents + '</div>').css({
+			top: y - 20,
+			left: x + 24
+		}).appendTo('body').fadeIn();
+	}
+
+	var previousPoint = null;
+
+	$('#graph-lines, #graph-bars').bind('plothover', function (event, pos, item) {
+		if (item) {
+			if (previousPoint != item.dataIndex) {
+				previousPoint = item.dataIndex;
+				$('#tooltip').remove();
+				var x = item.datapoint[0],
+					y = item.datapoint[1];
+					showTooltip(item.pageX, item.pageY, y + ' visitors');
+			}
+		} else {
+			$('#tooltip').remove();
+			previousPoint = null;
+		}
+	});
+
+});
+</script>
+
+
+</head>
+
+<body>
+<div id="graph-wrapper">
+	<div class="graph-info">
+		<a href="javascript:void(0)" class="visitors">NUST Year 2014</a>
+		<a href="javascript:void(0)" class="returning">NUST Year 2015</a>
+	</div>
+
+	<div class="graph-container">
+		<div id="graph-lines"></div>
+	</div>	
+<br/>	
+	
+	</div>	
+	
+</div>
+
+
+</body>
+</html>
